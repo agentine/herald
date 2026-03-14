@@ -1,0 +1,25 @@
+# Changelog
+
+All notable changes to `@agentine/herald` will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.1.0] - 2026-03-14
+
+### Added
+
+- Initial release of `@agentine/herald`
+- `notify()` function — auto-detects platform and sends desktop notification
+- `NotificationCenter` provider for macOS (via `osascript` / JXA — no bundled binaries)
+- `WindowsBalloon` provider for Windows (via PowerShell + BurntToast/WinRT)
+- `NotifySend` provider for Linux (via `notify-send` / D-Bus `gdbus` fallback)
+- `FallbackChain` utility — tries providers in order, gracefully degrades
+- `Notifier` class — node-notifier-compatible default export with `EventEmitter` API (`click`, `timeout`, `error` events)
+- Full TypeScript support with native type definitions (no `@types/*` needed)
+- ESM + CJS dual build via `exports` map
+- Zero runtime dependencies (Node.js built-ins only: `child_process`, `path`, `os`)
+- Node.js ≥ 18 engine requirement
+- Full `NotifyOptions` surface: `title`, `message`, `subtitle`, `icon`, `sound`, `timeout`, `actions`, `wait`, `appId`, `urgency`
+- `NotificationResult` with `success`, `action`, and `error` fields
+- Migration guide from node-notifier (callback → promise, import swap)

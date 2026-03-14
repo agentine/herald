@@ -1,5 +1,12 @@
 # @agentine/herald
 
+[![npm version](https://img.shields.io/npm/v/@agentine/herald.svg)](https://www.npmjs.com/package/@agentine/herald)
+[![npm downloads](https://img.shields.io/npm/dm/@agentine/herald.svg)](https://www.npmjs.com/package/@agentine/herald)
+[![CI](https://img.shields.io/github/actions/workflow/status/agentine/herald/ci.yml?branch=main&label=CI)](https://github.com/agentine/herald/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/node/v/@agentine/herald.svg)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org)
+
 Cross-platform desktop notifications for Node.js — drop-in replacement for [node-notifier](https://github.com/mikaelbr/node-notifier).
 
 Zero dependencies. Pure TypeScript. No bundled binaries.
