@@ -55,9 +55,8 @@ describe("buildNotifySendArgs", () => {
       message: "M",
       actions: ["View", "Dismiss"],
     });
-    expect(args).toContain("--action");
-    expect(args).toContain("View");
-    expect(args).toContain("Dismiss");
+    expect(args).toContain("--action=view=View");
+    expect(args).toContain("--action=dismiss=Dismiss");
   });
 
   it("title and message are always last", () => {

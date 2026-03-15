@@ -60,7 +60,8 @@ function buildNotifySendArgs(options: NotifyOptions): string[] {
 
   if (options.actions && options.actions.length > 0) {
     for (const action of options.actions) {
-      args.push("--action", action);
+      const id = action.toLowerCase().replace(/\s+/g, "-");
+      args.push(`--action=${id}=${action}`);
     }
   }
 

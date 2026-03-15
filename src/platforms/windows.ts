@@ -50,16 +50,22 @@ function buildBurntToastScript(
   return cmd;
 }
 
+function escapeXml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 function buildWinRTScript(
   title: string,
   message: string,
   appId: string
 ): string {
+  const xmlTitle = escapeXml(title);
+  const xmlMessage = escapeXml(message);
   return [
     `[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null;`,
     `[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom, ContentType = WindowsRuntime] | Out-Null;`,
     `$xml = New-Object Windows.Data.Xml.Dom.XmlDocument;`,
-    `$template = '<toast><visual><binding template="ToastText02"><text id="1">${title}</text><text id="2">${message}</text></binding></visual></toast>';`,
+    `$template = '<toast><visual><binding template="ToastText02"><text id="1">${xmlTitle}</text><text id="2">${xmlMessage}</text></binding></visual></toast>';`,
     `$xml.LoadXml($template);`,
     `$toast = [Windows.UI.Notifications.ToastNotification]::new($xml);`,
     `[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("${appId}").Show($toast)`,
