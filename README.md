@@ -50,18 +50,18 @@ console.log(result.success); // true or false
 
 ### NotifyOptions
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `title` | `string` | Notification title (required) |
-| `message` | `string` | Notification body (required) |
-| `subtitle` | `string` | Subtitle (macOS only) |
-| `icon` | `string` | Path to icon image |
-| `sound` | `boolean \| string` | Play sound (`true` for default, or named sound) |
-| `timeout` | `number` | Auto-dismiss after N seconds |
-| `actions` | `string[]` | Action button labels |
-| `wait` | `boolean` | Wait for user interaction |
-| `appId` | `string` | Application ID (Windows) |
-| `urgency` | `"low" \| "normal" \| "critical"` | Urgency level (Linux) |
+| Field | Type | Platform | Description |
+|-------|------|----------|-------------|
+| `title` | `string` | All | Notification title (required) |
+| `message` | `string` | All | Notification body (required) |
+| `subtitle` | `string` | macOS | Secondary line below the title |
+| `icon` | `string` | Windows, Linux | Path to icon image |
+| `sound` | `boolean \| string` | macOS, Windows | Play sound (`true` for default; on macOS pass a named sound e.g. `"Ping"`) |
+| `timeout` | `number` | Linux | Auto-dismiss after N seconds (passed as milliseconds to `notify-send`) |
+| `actions` | `string[]` | Linux | Action button labels (requires a compatible notification daemon) |
+| `wait` | `boolean` | — | Reserved for future use |
+| `appId` | `string` | Windows | Application identifier shown in notification centre (defaults to `"herald"`) |
+| `urgency` | `"low" \| "normal" \| "critical"` | Linux | Maps to `--urgency` flag of `notify-send` |
 
 ### NotificationResult
 
@@ -91,7 +91,7 @@ await ns.notify({ title: 'Linux', message: 'via notify-send', urgency: 'critical
 
 ### FallbackChain
 
-Try multiple notification strategies in order:
+Try multiple notification strategies in order, returning the first success:
 
 ```typescript
 import { FallbackChain, NotificationCenter, NotifySend } from '@agentine/herald';
@@ -103,6 +103,7 @@ const chain = new FallbackChain([
 
 await chain.notify({ title: 'Fallback', message: 'Tries each in order' });
 ```
+
 
 ## Migration from node-notifier
 
@@ -171,6 +172,23 @@ notifier.notify({ title: 'Hello', message: 'World' });
 | Linux | notify-send | notify-send + D-Bus fallback |
 | API style | Callback | Promise + callback compat |
 | Maintained | Last commit Jan 2023 | Active |
+
+## Security
+
+Herald escapes all user-supplied strings before passing them to OS notification tools.
+
+| Platform | Mechanism | What is escaped |
+|----------|-----------|-----------------|
+| macOS | JXA via `osascript -e` | Backslashes, double quotes, newlines, carriage returns inside the JavaScript string literal |
+| Windows (WinRT) | XML template embedded in PowerShell | `&`, `<`, `>` XML entities in the toast XML body |
+| Windows (PowerShell args) | PowerShell double-quoted strings | Backticks, double quotes, `$`, newlines, carriage returns |
+| Linux | `execFile` argument array | OS handles argument isolation — no shell interpolation |
+
+**Windows WinRT XML injection** — title and message values are XML-escaped (`&amp;`, `&lt;`, `&gt;`) before insertion into the WinRT toast template. Unescaped `<` or `&` characters in input would otherwise break the XML document and could be abused to inject arbitrary toast XML elements.
+
+**General recommendations:**
+- Validate and sanitise notification content before passing user-controlled strings to `notify()`.
+- Avoid embedding raw user input in notification titles/messages in security-sensitive contexts without additional sanitisation.
 
 ## License
 
