@@ -5,6 +5,15 @@ All notable changes to `@agentine/herald` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `WindowsBalloon`: XML-escape WinRT toast title and message values to prevent injection
+- `NotifySend`: use correct `--action=id=label` format for `notify-send` action buttons
+- `escapeJxaArg`: strip carriage returns (`\r`) before quoting to prevent broken JXA strings
+- Removed dead `escapeShellArg` utility that was no longer used
+
 ## [0.1.0] - 2026-03-14
 
 ### Added
