@@ -5,16 +5,7 @@ All notable changes to `@agentine/herald` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.1] - 2026-03-14
-
-### Fixed
-
-- `WindowsBalloon`: XML-escape WinRT toast title and message values (`&`, `<`, `>`) to prevent XML injection in the toast template
-- `NotifySend`: use correct `--action=id=label` format for `notify-send` action buttons
-- `escapeJxaArg`: strip carriage returns (`\r`) before quoting to prevent broken JXA strings on macOS
-- Removed dead `escapeShellArg` utility that was no longer used
-
-## [0.1.0] - 2026-03-14
+## [0.1.0] - 2026-03-15
 
 ### Added
 
@@ -32,3 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Full `NotifyOptions` surface: `title`, `message`, `subtitle`, `icon`, `sound`, `timeout`, `actions`, `wait`, `appId`, `urgency`
 - `NotificationResult` with `success`, `action`, and `error` fields
 - Migration guide from node-notifier (callback → promise, import swap)
+
+### Fixed
+
+- `WindowsBalloon`: XML-escape WinRT toast title and message values (`&`, `<`, `>`) to prevent XML injection in the toast template
+- `NotifySend`: use correct `--action=id=label` format for `notify-send` action buttons
+- `escapeJxaArg`: strip carriage returns (`\r`) before quoting to prevent broken JXA strings on macOS
+- Removed dead `escapeShellArg` utility that was no longer used
